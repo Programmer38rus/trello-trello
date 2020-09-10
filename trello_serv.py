@@ -35,8 +35,19 @@ def read():
     return column_data
 
 # print(base_url.format('boards') + '/' + base_id + '/lists')
+
+def create(name, column_name):
+    column_data = requests.get(base_url.format('boards') + '/' + board_id + '/lists', params=auth_params).json()
+
+    for column in column_data:
+        if column['name'] == column_name:
+            requests.post(base_url.format('cards'), data={'name': name, 'idList':column['id'], **auth_params})
+            break
+
+
 if __name__ == "__main__":
     read()
+    create('Codewars', 'Doing')
 
 # for i in a:
 #     print(i)
