@@ -38,6 +38,10 @@ def read():
 # print(base_url.format('boards') + '/' + base_id + '/lists')
 
 def create(name, column_name):
+    verif = check_column(name)
+    print(verif)
+    if verif is None:
+        cc(column_name)
 
     column_data = requests.get(base_url.format('boards') + '/' + board_id + '/lists', params=auth_params).json()
 
@@ -47,7 +51,7 @@ def create(name, column_name):
             break
 
 def cc(name):
-    
+
     column_data = requests.get(base_url.format('boards') + '/' + board_id + '/lists', params=auth_params).json()
     for column in column_data:
         if column['name'] == name:
@@ -94,6 +98,13 @@ def move(name, column_name):
                 name = input(f"Задача с именеи {name} отсутствует!\nВведите другое: ")
                 move(name, column_name)
             break
+
+def check_column(column):
+
+    column_data = requests.get(base_url.format('boards') + '/' + board_id + '/lists', params=auth_params).json()
+    for real_column in column_data:
+        if column == real_column['name']:
+            return True
 
 if __name__ == "__main__":
     if len(sys.argv) <= 2:
